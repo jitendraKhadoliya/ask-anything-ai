@@ -3,14 +3,27 @@ import send from "./assets/send.svg";
 import user from "./assets/user.png";
 import bot from "./assets/bot.png";
 import loadingIcon from "./assets/loader.svg";
+import axios from 'axios';
 
 function App() {
   const [input, setInput] = useState("");
   const [posts, setPosts] = useState([]);
 
+  const fetchedBotResponse = async ()=>{
+    const {data} = await axios.post("https://localhost:4000",{ input },{
+      headers:{
+        "Content-Type": "application/json",
+      },
+    })
+    return data;
+  }
+
   const onSubmit = ()=>{
     if(input.trim() === "") return;
     updatePosts(input);
+    fetchedBotResponse().then((res)=>{
+      console.log(res);
+    });
   }
 
   const updatePosts = (post)=>{
